@@ -68,13 +68,13 @@ def read_graphs(indir, output, threads):
 			if k1 != k2: 
 				validTuples.append((k1, k2))
 	#print "Valid tuples: ", validTuples
-
+	fp.write("Network1,\t\t\t Network2,\t\t\t dist, Sim\n")
 	p = Pool(processes=threads)
 	for r in p.imap_unordered(com_sig_dist, ((t[0], t[1], sig_dic[t[0]], sig_dic[t[1]]) for t in validTuples), chunksize=10):
         	k1, k2 = r[0], r[1]
-        	val = r[2]
+        	dis, sim = r[2], r[3]
         	print("Done G1: {}, G2: {}".format(k1, k2))
-        	fp.write("{}, {}, {:.5f}\n".format(k1, k2, val))
+        	fp.write("{}, {}, {:.5f}, {:.5f}\n".format(k1, k2, dis, sim))
 	
 	p.close()
 	p.join()
@@ -128,9 +128,10 @@ def com_sig_dist(tupArg):
 
 	dist = np.log(det_AM_of_cov_matrices/sqrt_det_covA_covB)/2
 	sim = np.exp(-dist)
+	#print "sim = ", sim
 
 	#print '++++++++++++++++ Dist: ', dist
-	return (tupArg[0], tupArg[1], dist)
+	return (tupArg[0], tupArg[1], dist, sim)
 
 def main():
 	parser = argparse.ArgumentParser(description="Compute comsig distances between graphs")
