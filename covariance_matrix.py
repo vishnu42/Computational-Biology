@@ -114,18 +114,19 @@ def covariance_sig(G, k):
 
 	e1 = np.zeros((num_nodes, 1))+1
 
-	power_iter_matrix = (G.number_of_nodes() * (adj_matrix * e1))/np.linalg.norm(adj_matrix * e1)
+	p_iter = adj_matrix * e1
+	power_iter_matrix = (G.number_of_nodes() * (p_iter))/np.linalg.norm(p_iter)
 	for i in range(2,k+1):
-		p_iter = np.linalg.matrix_power(adj_matrix, i) * e1
+		p_iter = adj_matrix * p_iter
 		p_iter = (G.number_of_nodes() * (p_iter))/np.linalg.norm(p_iter)
 		power_iter_matrix = np.column_stack([power_iter_matrix, p_iter])
-	
+
 	cov_matrix = [[0 for x in range(k)] for x in range(k)]
 	for i in range(num_nodes):
 		C_i = np.matrix.transpose(power_iter_matrix[i,0:]-1) * (power_iter_matrix[i,0:]-1)
 		cov_matrix += C_i
 	
-	return cov_matrix
+	return cov_matrix/num_nodes
 	
 #===========================================================================#
 #                 Distance between G1,G2                                    #
