@@ -17,3 +17,6 @@ edges.
 # Running covariance_matrix_threads.py: (Multi threading, dynamic programming)
 1) The program expects an input graphs dataset, and output file into which the result will be written, a parameter k(number of power iterations, default = 5) and no_of_threads (default 10).
 2) command to run the program:	python covariance_matrix_threads.py --input dataset_3 --output outfile --k 5 --threads 5
+
+
+We have tested our code on python version numbers : Python 2.7.6 and Python 2.7.9 
