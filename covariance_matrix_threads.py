@@ -44,7 +44,8 @@ def read_graphs(indir, output, threads):
 	fp = open(output,'w')
 
 	p = Pool(processes=threads)
-	paths = glob.glob(indir + "/*.txt")
+	#paths = glob.glob(indir + "/*.txt")
+	paths = glob.glob(indir + "/*/*/*.gw")
 	#print paths
 	sig_dic = {}
 	
@@ -64,10 +65,7 @@ def read_graphs(indir, output, threads):
 	validTuples = []
 	for k1, v1 in sig_dic.iteritems():
 		for k2, v2 in sig_dic.iteritems():
-		#start computing if densities are equal
-			#if True:#k1.Density == k2.Density:
-			if k1 != k2: 
-				validTuples.append((k1, k2))
+			validTuples.append((k1, k2))
 	#print "Valid tuples: ", validTuples
 	fp.write("Network1,\t\t\t Network2,\t\t\t dist, Sim, G-sim\n")
 	p = Pool(processes=threads)
@@ -131,9 +129,11 @@ def covariance_sig(fn):
 	#print "In cov sig", fn
 	filename = fn.split('/')[-1]
 	#print 'filename =', filename
-	model_name = filename.split('_')[0]
+	#model_name = filename.split('_')[0]
+	model_name = fn.split('/')[-2]
 	#print 'modelname =', model_name
-	G = nx.read_edgelist(fn)
+	#G = nx.read_edgelist(fn)
+	G = nx.read_leda(fn)
 	adj_matrix = nx.adjacency_matrix(G)
 	num_nodes = G.number_of_nodes();
 	#print "In cov sig", num_nodes
@@ -192,10 +192,6 @@ def main():
 	args = parser.parse_args()
 	global k_value 
 	k_value = args.k
-	#print "kvalue_main", k_value
-	#read_graphs(args.input, args.output, args.k, args.threads)
-	#mygraph()
-	#return
 	read_graphs(args.input, args.output, args.threads)
 
 if __name__ == "__main__":
