@@ -29,9 +29,6 @@ from sklearn.metrics import precision_recall_curve
 matplotlib.use('Agg')
 #from graphviz import *
 Graph_List = []
-models = ['ER','GEO','PAM','DDM']
-rho = [0.005,0.01]
-nodes = [1000]
 Reference_matrix = {}
 Our_matrix = {}
 #dataset = []
